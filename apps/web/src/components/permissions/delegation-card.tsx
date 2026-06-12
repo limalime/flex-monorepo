@@ -9,9 +9,12 @@ import type { Permission } from "@/hooks/use-permissions";
 import { useAgent } from "@/providers/agent";
 
 export function DelegationCard() {
-  const { permissions } = useAgent();
+  const { permissions, delegations } = useAgent();
   const activePermission = permissions.find(
     (permission) => permission.status === "active",
+  );
+  const activeDelegation = delegations.find(
+    (delegation) => delegation.status === "active",
   );
 
   return (
@@ -33,7 +36,13 @@ export function DelegationCard() {
           <div>
             <p className="text-muted-foreground">Status</p>
 
-            <p className="text-yellow-500">Not Delegated</p>
+            <p
+              className={
+                activeDelegation ? "text-green-500" : "text-yellow-500"
+              }
+            >
+              {activeDelegation ? "Active" : "Not Delegated"}
+            </p>
           </div>
         </div>
       ) : (

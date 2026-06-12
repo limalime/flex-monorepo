@@ -27,6 +27,10 @@ export type Permission = {
     | "revoked";
 
   createdAt: number;
+  
+  permissionContext?: string;
+
+  delegationManager?: string;
 };
 
 export type PermissionActivity = {
@@ -52,6 +56,15 @@ export function usePermissions() {
   const {
     address,
   } = useWallet();
+
+  function generateId() {
+  return (
+    Date.now().toString(36) +
+    Math.random()
+      .toString(36)
+      .slice(2)
+  );
+  }
 
   const [
     permissions,
@@ -141,8 +154,7 @@ export function usePermissions() {
     setActivities(
       (previous) => [
         {
-          id:
-            crypto.randomUUID(),
+          id: generateId(),
 
           owner: address,
 
@@ -165,7 +177,7 @@ export function usePermissions() {
         ...previous,
         {
           id:
-            crypto.randomUUID(),
+            generateId(),
 
           owner:
             address,
@@ -206,7 +218,7 @@ export function usePermissions() {
       (previous) => [
         {
           id:
-            crypto.randomUUID(),
+            generateId(),
 
           owner: address,
 
@@ -254,7 +266,7 @@ export function usePermissions() {
         (previous) => [
           {
             id:
-              crypto.randomUUID(),
+              generateId(),
 
             owner: address,
 

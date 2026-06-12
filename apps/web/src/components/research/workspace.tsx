@@ -16,6 +16,16 @@ export function ResearchWorkspace() {
   const { result, run, isLoading } = useResearch();
 
   const [premiumUnlocked, setPremiumUnlocked] = useState(false);
+  const [premiumData, setPremiumData] = useState();
+
+  async function handleUnlock() {
+  const data =
+    await fetchPremiumResearch();
+
+  setPremiumData(data);
+
+  setPremiumUnlocked(true);
+  }
 
   return (
     <div className="space-y-6 p-6">
@@ -29,8 +39,8 @@ export function ResearchWorkspace() {
       {result && (
         <PremiumCard
           unlocked={premiumUnlocked}
-          premium={result.premium}
-          onUnlock={() => setPremiumUnlocked(true)}
+          premium={premiumData}
+          onUnlock={handleUnlock}
         />
       )}
     </div>

@@ -9,11 +9,28 @@ import {
   usePermissions,
 } from "@/hooks/use-permissions";
 
+import {
+  useDelegation,
+} from "@/hooks/use-delegation";
+
+type AgentContextValue =
+  ReturnType<
+    typeof usePermissions
+  > & {
+    delegations:
+      ReturnType<
+        typeof useDelegation
+      >["delegations"];
+
+    createDelegation:
+      ReturnType<
+        typeof useDelegation
+      >["createDelegation"];
+  };
+
 const AgentContext =
   createContext<
-    ReturnType<
-      typeof usePermissions
-    > | null
+    AgentContextValue | null
   >(null);
 
 type Props = {
@@ -23,8 +40,21 @@ type Props = {
 export function AgentProvider({
   children,
 }: Props) {
-  const value =
+  const permissions =
     usePermissions();
+
+  const {
+    delegations,
+    createDelegation,
+  } = useDelegation();
+
+  const value: AgentContextValue = {
+    ...permissions,
+
+    delegations,
+
+    createDelegation,
+  };
 
   return (
     <AgentContext.Provider

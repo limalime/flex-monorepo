@@ -1,26 +1,64 @@
 "use client";
 
-import { useAgent } from "@/providers/agent";
+import { useState } from "react";
+
+export type Delegation = {
+  id: string;
+
+  limit: number;
+
+  createdAt: number;
+
+  status:
+    | "active"
+    | "revoked";
+};
+
+function generateId() {
+  return (
+    Date.now().toString(36) +
+    Math.random()
+      .toString(36)
+      .slice(2)
+  );
+}
 
 export function useDelegation() {
-  const {
-    permissions,
-  } = useAgent();
+  const [
+    delegations,
+    setDelegations,
+  ] = useState<
+    Delegation[]
+  >([]);
 
-  const activePermission =
-    permissions.find(
-      (permission) =>
-        permission.status ===
+  async function createDelegation(
+    limit: number,
+  ) {
+    const delegation: Delegation = {
+      id: generateId(),
+
+      limit,
+
+      createdAt:
+        Date.now(),
+
+      status:
         "active",
+    };
+
+    setDelegations(
+      (previous) => [
+        delegation,
+        ...previous,
+      ],
     );
 
-  return {
-    delegated:
-      Boolean(
-        activePermission,
-      ),
+    return delegation;
+  }
 
-    permission:
-      activePermission,
+  return {
+    delegations,
+
+    createDelegation,
   };
 }

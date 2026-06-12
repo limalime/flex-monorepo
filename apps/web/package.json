@@ -4,7 +4,7 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "dev": "next dev --port 3000 --webpack",
+    "dev": "next dev --port 3000",
     "dev:warm": "next dev --port 3000 --webpack & sleep 10 && node warmup.js",
     "build": "next build",
     "start": "next start",
@@ -12,10 +12,16 @@
     "check-types": "next typegen && tsc --noEmit"
   },
   "dependencies": {
+    "@metamask/delegation-toolkit": "^0.13.0",
     "@metamask/smart-accounts-kit": "^1.6.0",
+    "@metamask/x402": "^0.2.0",
+    "@radix-ui/react-visually-hidden": "^1.2.5",
     "@repo/ui": "workspace:*",
     "@tailwindcss/postcss": "^4.3.0",
     "@tanstack/react-query": "^5.101.0",
+    "@x402/core": "^2.14.0",
+    "@x402/evm": "^2.14.0",
+    "@x402/fetch": "^2.14.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "framer-motion": "^12.40.0",

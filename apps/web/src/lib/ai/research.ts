@@ -1,5 +1,14 @@
 import { env } from "@/lib/config/env";
 
+const openRouterApiKey =
+  process.env.OPENROUTER_API_KEY;
+
+if (!openRouterApiKey) {
+  throw new Error(
+    "Missing OPENROUTER_API_KEY",
+  );
+}
+
 type ResearchResult = {
   recommendation: string;
 
@@ -30,7 +39,7 @@ export async function runResearch(
 
       headers: {
         Authorization:
-          `Bearer ${env.openRouterApiKey}`,
+          `Bearer ${openRouterApiKey}`,
 
         "Content-Type":
           "application/json",
@@ -38,7 +47,7 @@ export async function runResearch(
 
       body: JSON.stringify({
         model:
-          "nvidia/nemotron-3-ultra-550b-a55b:free",
+          "openai/gpt-oss-20b:free",
 
         messages: [
           {
