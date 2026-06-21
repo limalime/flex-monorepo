@@ -18,6 +18,7 @@ export function useWallet() {
     connect,
     connectors,
     isPending,
+    error: connectError,
   } = useConnect();
 
   const { disconnect } =
@@ -37,26 +38,18 @@ export function useWallet() {
     isPending,
     chainId,
     connector,
+    error: connectError ?? undefined,
 
     connect: async () => {
       if (!injectedConnector) {
-        console.error(
-          "Injected connector not found"
-        );
-
-        return;
-      }
-
-      try {
-        await connect({
-          connector: injectedConnector,
-        });
-      } catch (error) {
-        console.error(
-          "Wallet connection failed",
-          error
+        throw new Error(
+          "No injected wallet connector found. Please install a browser wallet."
         );
       }
+
+      await connect({
+        connector: injectedConnector,
+      });
     },
 
     disconnect,

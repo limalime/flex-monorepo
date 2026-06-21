@@ -28,7 +28,7 @@ const btnClass = `
 export function ConnectButton() {
   const [mounted, setMounted] = useState(false);
 
-  const { address, isConnected, isPending, connect, disconnect } = useWallet();
+  const { address, isConnected, isPending, connect, disconnect, error } = useWallet();
 
   useEffect(() => {
     setMounted(true);
@@ -37,9 +37,12 @@ export function ConnectButton() {
   async function copyAddress() {
     if (!address) return;
 
-    await navigator.clipboard.writeText(address);
-
-    toast.success("Address copied");
+    try {
+      await navigator.clipboard.writeText(address);
+      toast.success("Address copied");
+    } catch {
+      toast.error("Failed to copy address");
+    }
   }
 
   function openExplorer() {
@@ -60,13 +63,31 @@ export function ConnectButton() {
 
   if (!isConnected || !address) {
     return (
-      <Button
-        onClick={() => connect()}
-        disabled={isPending}
-        className={btnClass}
-      >
-        {isPending ? "Connecting..." : "Connect Wallet"}
-      </Button>
+      <div>
+        <Button
+          onClick={async () => {
+            try {
+              await connect();
+            } catch (err) {
+              toast.error(
+                err instanceof Error
+                  ? err.message
+                  : "Wallet connection failed",
+              );
+            }
+          }}
+          disabled={isPending}
+          className={btnClass}
+        >
+          {isPending ? "Connecting..." : "Connect Wallet"}
+        </Button>
+
+        {error && (
+          <p className="mt-1 text-xs text-red-500">
+            {error.message}
+          </p>
+        )}
+      </div>
     );
   }
 

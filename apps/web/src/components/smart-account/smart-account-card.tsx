@@ -22,9 +22,12 @@ export function SmartAccountCard({ address }: Props) {
   async function copyAddress() {
     if (!address) return;
 
-    await navigator.clipboard.writeText(address);
-
-    toast.success("Smart account copied");
+    try {
+      await navigator.clipboard.writeText(address);
+      toast.success("Smart account copied");
+    } catch {
+      toast.error("Failed to copy address");
+    }
   }
 
   function openExplorer() {

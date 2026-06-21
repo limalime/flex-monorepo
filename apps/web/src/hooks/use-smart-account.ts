@@ -23,6 +23,11 @@ export function useSmartAccount() {
     setIsLoading,
   ] = useState(false);
 
+  const [
+    error,
+    setError,
+  ] = useState<string>();
+
   useEffect(() => {
     const storedAddress =
       localStorage.getItem(
@@ -38,14 +43,14 @@ export function useSmartAccount() {
 
   async function init() {
     if (!walletClient) {
-      console.error(
-        "Wallet client not found",
-      );
-
-      return;
+      const msg =
+        "Wallet client not found. Connect your wallet first.";
+      setError(msg);
+      throw new Error(msg);
     }
 
     try {
+      setError(undefined);
       setIsLoading(true);
 
       const account =
@@ -55,11 +60,6 @@ export function useSmartAccount() {
 
       const smartAddress =
         await account.getAddress();
-
-      console.log(
-        "Smart Account:",
-        smartAddress,
-      );
 
       setAddress(
         smartAddress,
@@ -72,11 +72,11 @@ export function useSmartAccount() {
 
       return smartAddress;
     } catch (error) {
-      console.error(
-        "Smart account init failed:",
-        error,
-      );
-
+      const msg =
+        error instanceof Error
+          ? error.message
+          : "Smart account initialization failed";
+      setError(msg);
       throw error;
     } finally {
       setIsLoading(false);
@@ -94,6 +94,7 @@ export function useSmartAccount() {
   return {
     address,
     isLoading,
+    error,
     init,
     clear,
   };
