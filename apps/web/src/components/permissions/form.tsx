@@ -125,13 +125,30 @@ export function PermissionForm({
           bg-indigo-500
           hover:bg-indigo-600
         "
-        onClick={() =>
+        onClick={() => {
+          const parsedLimit = Number(limit);
+          const parsedDuration = Number(duration);
+
+          if (
+            !Number.isFinite(parsedLimit) ||
+            parsedLimit <= 0
+          ) {
+            return;
+          }
+
+          if (
+            !Number.isFinite(parsedDuration) ||
+            parsedDuration <= 0
+          ) {
+            return;
+          }
+
           onCreate({
             type,
-            limit: Number(limit),
-            duration: Number(duration),
-          })
-        }
+            limit: parsedLimit,
+            duration: parsedDuration,
+          });
+        }}
       >
         Create Permission
       </Button>
