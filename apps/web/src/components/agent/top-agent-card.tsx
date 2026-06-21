@@ -5,6 +5,7 @@ import Image from "next/image";
 import { Trophy } from "lucide-react";
 
 import { Card } from "@/components/ui/card";
+import { CardHeader } from "@/components/shared/card-header";
 
 import { topAgents }
 from "@/lib/mock/agents";
@@ -14,18 +15,7 @@ export function TopAgentCard() {
 
   return (
     <Card className="rounded-2xl p-6">
-      <div className="mb-4 flex items-center gap-2">
-        <Trophy
-          className="
-            h-5 w-5
-            text-indigo-500
-          "
-        />
-
-        <h3 className="font-semibold">
-          Top Agent
-        </h3>
-      </div>
+      <CardHeader icon={Trophy} title="Top Agent" />
 
       <div className="flex items-center gap-4">
         <Image

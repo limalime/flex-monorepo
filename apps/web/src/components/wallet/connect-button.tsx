@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { Copy, ExternalLink, LogOut } from "lucide-react";
 import { useWallet } from "@/hooks/use-wallet";
+import { shortenAddress, copyAddress, openExplorer } from "@/lib/utils";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,11 +13,6 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
-import { CHAIN } from "@/lib/config/chains";
-
-function shortenAddress(address: string) {
-  return `${address.slice(0, 6)}...${address.slice(-4)}`;
-}
 
 const btnClass = `
   rounded-xl bg-indigo-500 px-4 py-2
@@ -33,22 +29,6 @@ export function ConnectButton() {
   useEffect(() => {
     setMounted(true);
   }, []);
-
-  async function copyAddress() {
-    if (!address) return;
-
-    await navigator.clipboard.writeText(address);
-
-    toast.success("Address copied");
-  }
-
-  function openExplorer() {
-    if (!address) return;
-    const explorerUrl = CHAIN.blockExplorers?.default.url;
-    if (explorerUrl) {
-      window.open(`${explorerUrl}/address/${address}`, "_blank");
-    }
-  }
 
   if (!mounted) {
     return (
@@ -77,10 +57,10 @@ export function ConnectButton() {
       </DropdownMenuTrigger>
 
       <DropdownMenuContent align="end" className="w-56">
-        <DropdownMenuItem onClick={copyAddress}>
+        <DropdownMenuItem onClick={() => copyAddress(address)}>
           <Copy /> Copy Address
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={openExplorer}>
+        <DropdownMenuItem onClick={() => openExplorer(address)}>
           <ExternalLink /> View Explorer
         </DropdownMenuItem>
         <DropdownMenuSeparator />

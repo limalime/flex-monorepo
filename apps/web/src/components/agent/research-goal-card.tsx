@@ -3,22 +3,12 @@
 import { Search } from "lucide-react";
 
 import { Card } from "@/components/ui/card";
+import { CardHeader } from "@/components/shared/card-header";
 
 export function ResearchGoalCard() {
   return (
     <Card className="rounded-2xl p-6">
-      <div className="mb-4 flex items-center gap-2">
-        <Search
-          className="
-            h-5 w-5
-            text-indigo-500
-          "
-        />
-
-        <h3 className="font-semibold">
-          Research Goal
-        </h3>
-      </div>
+      <CardHeader icon={Search} title="Research Goal" />
 
       <div className="space-y-4">
         <div>

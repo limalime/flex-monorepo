@@ -1,5 +1,7 @@
 import { env } from "@/lib/config/env";
 
+import type { ResearchResult } from "@/types/research";
+
 const openRouterApiKey =
   process.env.OPENROUTER_API_KEY;
 
@@ -8,26 +10,6 @@ if (!openRouterApiKey) {
     "Missing OPENROUTER_API_KEY",
   );
 }
-
-type ResearchResult = {
-  recommendation: string;
-
-  confidence: number;
-
-  summary: string;
-
-  bullCase: string[];
-
-  bearCase: string[];
-
-  premium?: {
-    riskLevel: string;
-
-    marketSignals: string[];
-
-    strategy: string;
-  };
-};
 
 export async function runResearch(
   question: string,

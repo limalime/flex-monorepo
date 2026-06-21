@@ -3,8 +3,8 @@
 import { Shield } from "lucide-react";
 
 import { Card } from "@/components/ui/card";
-
-import type { Permission } from "@/hooks/use-permissions";
+import { CardHeader } from "@/components/shared/card-header";
+import { InfoRow } from "@/components/shared/info-row";
 
 import { useAgent } from "@/providers/agent";
 
@@ -19,23 +19,13 @@ export function DelegationCard() {
 
   return (
     <Card className="rounded-2xl p-6">
-      <div className="mb-4 flex items-center gap-2">
-        <Shield className="h-5 w-5 text-indigo-500" />
-
-        <h3 className="font-semibold">Delegation</h3>
-      </div>
+      <CardHeader icon={Shield} title="Delegation" />
 
       {!activePermission ? (
         <div className="space-y-3 text-sm">
-          <div>
-            <p className="text-muted-foreground">Delegate</p>
+          <InfoRow label="Delegate">Flex AI Agent</InfoRow>
 
-            <p>Flex AI Agent</p>
-          </div>
-
-          <div>
-            <p className="text-muted-foreground">Status</p>
-
+          <InfoRow label="Status">
             <p
               className={
                 activeDelegation ? "text-green-500" : "text-yellow-500"
@@ -43,39 +33,21 @@ export function DelegationCard() {
             >
               {activeDelegation ? "Active" : "Not Delegated"}
             </p>
-          </div>
+          </InfoRow>
         </div>
       ) : (
         <div className="space-y-3 text-sm">
-          <div>
-            <p className="text-muted-foreground">Delegate</p>
+          <InfoRow label="Delegate">Flex AI Agent</InfoRow>
 
-            <p>Flex AI Agent</p>
-          </div>
+          <InfoRow label="Permission">{activePermission.type}</InfoRow>
 
-          <div>
-            <p className="text-muted-foreground">Permission</p>
+          <InfoRow label="Daily Limit">{activePermission.limit} USDC</InfoRow>
 
-            <p>{activePermission.type}</p>
-          </div>
+          <InfoRow label="Duration">{activePermission.duration} Days</InfoRow>
 
-          <div>
-            <p className="text-muted-foreground">Daily Limit</p>
-
-            <p>{activePermission.limit} USDC</p>
-          </div>
-
-          <div>
-            <p className="text-muted-foreground">Duration</p>
-
-            <p>{activePermission.duration} Days</p>
-          </div>
-
-          <div>
-            <p className="text-muted-foreground">Status</p>
-
+          <InfoRow label="Status">
             <p className="text-green-500">Active</p>
-          </div>
+          </InfoRow>
         </div>
       )}
     </Card>

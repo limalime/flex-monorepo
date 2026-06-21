@@ -1,13 +1,12 @@
 "use client";
 
 import {
-  useEffect,
-  useState,
-} from "react";
-
-import {
   useWallet,
 } from "@/hooks/use-wallet";
+
+import { useLocalStorage } from "@/hooks/use-local-storage";
+
+import { generateId } from "@/lib/utils";
 
 export type Permission = {
   id: string;
@@ -47,98 +46,26 @@ export type PermissionActivity = {
   createdAt: number;
 };
 
-const ACTIVITY_STORAGE_KEY =
-  "flex-activities";
-const STORAGE_KEY =
-  "flex-permissions";
-
 export function usePermissions() {
   const {
     address,
   } = useWallet();
 
-  function generateId() {
-  return (
-    Date.now().toString(36) +
-    Math.random()
-      .toString(36)
-      .slice(2)
-  );
-  }
-
   const [
     permissions,
     setPermissions,
-  ] = useState<
-    Permission[]
-  >([]);
+  ] = useLocalStorage<Permission[]>(
+    "flex-permissions",
+    [],
+  );
 
   const [
     activities,
     setActivities,
-  ] = useState<
-    PermissionActivity[]
-  >([]);
-
-  useEffect(() => {
-  const stored =
-    localStorage.getItem(
-      ACTIVITY_STORAGE_KEY,
-    );
-
-  if (!stored) {
-    return;
-  }
-
-  try {
-    setActivities(
-      JSON.parse(stored),
-    );
-  } catch {
-    localStorage.removeItem(
-      ACTIVITY_STORAGE_KEY,
-    );
-  }
-}, []);
-  
-  useEffect(() => {
-    const stored =
-      localStorage.getItem(
-        STORAGE_KEY,
-      );
-
-    if (!stored) {
-      return;
-    }
-
-    try {
-      setPermissions(
-        JSON.parse(stored),
-      );
-    } catch {
-      localStorage.removeItem(
-        STORAGE_KEY,
-      );
-    }
-  }, []);
-
-  useEffect(() => {
-  localStorage.setItem(
-    ACTIVITY_STORAGE_KEY,
-    JSON.stringify(
-      activities,
-    ),
+  ] = useLocalStorage<PermissionActivity[]>(
+    "flex-activities",
+    [],
   );
-}, [activities]);
-  
-  useEffect(() => {
-    localStorage.setItem(
-      STORAGE_KEY,
-      JSON.stringify(
-        permissions,
-      ),
-    );
-  }, [permissions]);
 
   function createPermission(
     permission: {

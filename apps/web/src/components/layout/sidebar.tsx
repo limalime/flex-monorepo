@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ThemeToggle } from "@/components/layout/theme-toggle";
 import { Logo } from "@/components/brand/logo"
+import type { LucideIcon } from "lucide-react";
 
 import {
   mainNav,
@@ -13,8 +14,39 @@ import {
 import { cn } from "@/lib/utils";
 import { ConnectButton } from "@/components/wallet/connect-button";
 
+function NavLink({
+  href,
+  icon: Icon,
+  title,
+  isActive,
+}: {
+  href: string;
+  icon: LucideIcon;
+  title: string;
+  isActive: boolean;
+}) {
+  return (
+    <Link
+      href={href}
+      className={cn(
+        "flex items-center gap-3 rounded-xl px-3 py-2 transition-colors",
+        isActive
+          ? "bg-indigo-500 text-white"
+          : "hover:bg-indigo-500/10"
+      )}
+    >
+      <Icon className="h-5 w-5" />
+      {title}
+    </Link>
+  );
+}
+
 export function Sidebar() {
   const pathname = usePathname();
+
+  function isActive(href: string) {
+    return pathname === href || pathname.startsWith(`${href}/`);
+  }
 
   return (
     <aside
@@ -34,55 +66,27 @@ export function Sidebar() {
 
       <nav className="flex-1 px-3">
         <div className="space-y-1">
-          {mainNav.map((item) => {
-            const isActive =
-              pathname === item.href ||
-              pathname.startsWith(
-                `${item.href}/`
-              );
-
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={cn(
-                  "flex items-center gap-3 rounded-xl px-3 py-2 transition-colors",
-                  isActive
-                    ? "bg-indigo-500 text-white"
-                    : "hover:bg-indigo-500/10"
-                )}
-              >
-                <item.icon className="h-5 w-5" />
-                {item.title}
-              </Link>
-            );
-          })}
+          {mainNav.map((item) => (
+            <NavLink
+              key={item.href}
+              href={item.href}
+              icon={item.icon}
+              title={item.title}
+              isActive={isActive(item.href)}
+            />
+          ))}
         </div>
 
         <div className="mt-6 border-t pt-6">
-          {secondaryNav.map((item) => {
-            const isActive =
-              pathname === item.href ||
-              pathname.startsWith(
-                `${item.href}/`
-              );
-
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={cn(
-                  "flex items-center gap-3 rounded-xl px-3 py-2 transition-colors",
-                  isActive
-                    ? "bg-indigo-500 text-white"
-                    : "hover:bg-indigo-500/10"
-                )}
-              >
-                <item.icon className="h-5 w-5" />
-                {item.title}
-              </Link>
-            );
-          })}
+          {secondaryNav.map((item) => (
+            <NavLink
+              key={item.href}
+              href={item.href}
+              icon={item.icon}
+              title={item.title}
+              isActive={isActive(item.href)}
+            />
+          ))}
           <div className="flex flex-col gap-4 pl-3 pt-8">
             <ConnectButton>
               Connect Wallet

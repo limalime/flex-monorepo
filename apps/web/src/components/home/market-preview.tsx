@@ -1,67 +1,53 @@
 import { featuredMarkets } from "@/lib/mock/markets";
+import { ProbabilityBar } from "@/components/shared/probability-bar";
 
 export function MarketPreview() {
   const market = featuredMarkets[0];
-  const market1 = featuredMarkets[1];
 
   return (
-    <>
-      <div
+    <div
+      className="
+        rounded-3xl
+        border border-indigo-500/50
+        bg-background
+        p-6
+        shadow-xl
+        shadow-indigo-400/50
+        hover:shadow-indigo-300
+      "
+    >
+      <p
         className="
-          rounded-3xl
-          border border-indigo-500/50
-          bg-background
-          p-6
-          shadow-xl
-          shadow-indigo-400/50
-          hover:shadow-indigo-300
+          mb-6
+          text-lg
+          font-semibold
         "
       >
-        <p
-          className="
-            mb-6
-            text-lg
-            font-semibold
-          "
-        >
-          {market.question}
-        </p>
+        {market.question}
+      </p>
 
-        <div className="space-y-4">
-          <div>
-            <div className="mb-1 flex justify-between">
-              <span>YES</span>
-              <span>{market.yesProbability}%</span>
-            </div>
-            <div className="h-2 rounded-full bg-indigo-200">
-              <div
-                className="h-2 rounded-full bg-indigo-500"
-                style={{ width: `${market.yesProbability}%` }}
-              />
-            </div>
-          </div>
+      <div className="space-y-4">
+        <ProbabilityBar
+          label="YES"
+          probability={market.yesProbability}
+          barColor="bg-indigo-500"
+          trackColor="bg-indigo-200"
+        />
 
-          <div>
-            <div className="mb-1 flex justify-between">
-              <span>NO</span>
-              <span>{market.noProbability}%</span>
-            </div>
-            <div className="h-2 rounded-full bg-slate-200">
-              <div
-                className="h-2 rounded-full bg-slate-500"
-                style={{ width: `${market.noProbability}%` }}
-              />
-            </div>
-          </div>
-        </div>
+        <ProbabilityBar
+          label="NO"
+          probability={market.noProbability}
+          barColor="bg-slate-500"
+          trackColor="bg-slate-200"
+        />
+      </div>
 
-        <div className="mt-6 border-t pt-4">
-          <div className="flex justify-between">
-            <span>Volume</span>
-            <span>{market.volume}</span>
-          </div>
+      <div className="mt-6 border-t pt-4">
+        <div className="flex justify-between">
+          <span>Volume</span>
+          <span>{market.volume}</span>
         </div>
       </div>
-    </>
+    </div>
   );
 }

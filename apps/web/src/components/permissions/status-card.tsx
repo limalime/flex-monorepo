@@ -3,33 +3,35 @@
 import { Shield } from "lucide-react";
 
 import { Card } from "@/components/ui/card";
+import { CardHeader } from "@/components/shared/card-header";
+import { InfoRow } from "@/components/shared/info-row";
 
 import { useWallet } from "@/hooks/use-wallet";
 
 import { useAgent } from "@/providers/agent";
 
+import type { Permission } from "@/hooks/use-permissions";
+
+function countByStatus(
+  permissions: Permission[],
+  status: Permission["status"],
+) {
+  return permissions.filter(
+    (permission) => permission.status === status,
+  ).length;
+}
+
 export function PermissionStatusCard() {
-const { permissions } = useAgent();
+  const { permissions } = useAgent();
   const { isConnected } = useWallet();
 
-  const activeCount = permissions.filter(
-    (permission) => permission.status === "active",
-  ).length;
-
-  const disabledCount = permissions.filter(
-    (permission) => permission.status === "disabled",
-  ).length;
-
-  const expiredCount = permissions.filter(
-    (permission) => permission.status === "expired",
-  ).length;
-
-  const revokedCount = permissions.filter(
-    (permission) => permission.status === "revoked",
-  ).length;
+  const activeCount = countByStatus(permissions, "active");
+  const disabledCount = countByStatus(permissions, "disabled");
+  const expiredCount = countByStatus(permissions, "expired");
+  const revokedCount = countByStatus(permissions, "revoked");
 
   const activePermissionCount = isConnected
-    ? permissions.filter((permission) => permission.status === "active").length
+    ? activeCount
     : null;
 
   const activeTypes = permissions
@@ -38,16 +40,10 @@ const { permissions } = useAgent();
 
   return (
     <Card className="rounded-2xl p-6">
-      <div className="mb-4 flex items-center gap-2">
-        <Shield className="h-5 w-5 text-indigo-500" />
-
-        <h3 className="font-semibold">Permissions</h3>
-      </div>
+      <CardHeader icon={Shield} title="Permissions" />
 
       <div className="space-y-4 text-sm">
-        <div>
-          <p className="text-muted-foreground">Status</p>
-
+        <InfoRow label="Status">
           <p>
             {!isConnected
               ? "-"
@@ -55,41 +51,29 @@ const { permissions } = useAgent();
                 ? "No Active Permissions"
                 : `${activePermissionCount} Active`}
           </p>
-        </div>
+        </InfoRow>
 
-        <div>
-          <p className="text-muted-foreground">Permission Count</p>
-
+        <InfoRow label="Permission Count">
           <p>{activePermissionCount ?? "-"}</p>
-        </div>
+        </InfoRow>
 
-        <div>
-          <p className="text-muted-foreground">Active</p>
-
+        <InfoRow label="Active">
           <p>{isConnected ? activeCount : "-"}</p>
-        </div>
+        </InfoRow>
 
-        <div>
-          <p className="text-muted-foreground">Disabled</p>
-
+        <InfoRow label="Disabled">
           <p>{isConnected ? disabledCount : "-"}</p>
-        </div>
+        </InfoRow>
 
-        <div>
-          <p className="text-muted-foreground">Expired</p>
-
+        <InfoRow label="Expired">
           <p>{isConnected ? expiredCount : "-"}</p>
-        </div>
+        </InfoRow>
 
-        <div>
-          <p className="text-muted-foreground">Revoked</p>
-
+        <InfoRow label="Revoked">
           <p>{isConnected ? revokedCount : "-"}</p>
-        </div>
+        </InfoRow>
 
-        <div>
-          <p className="text-muted-foreground">Types</p>
-
+        <InfoRow label="Types">
           <p>
             {!isConnected
               ? "-"
@@ -97,15 +81,11 @@ const { permissions } = useAgent();
                 ? "-"
                 : activeTypes.join(", ")}
           </p>
-        </div>
+        </InfoRow>
 
-        <div>
-          <p className="text-muted-foreground">
-            Last Updated
-          </p>
-
+        <InfoRow label="Last Updated">
           <p>Never</p>
-        </div>
+        </InfoRow>
       </div>
     </Card>
   );

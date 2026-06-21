@@ -4,12 +4,9 @@ import { Wallet } from "lucide-react";
 
 import { useWallet } from "@/hooks/use-wallet";
 import { Card } from "@/components/ui/card";
-
-function shortenAddress(address?: string) {
-  if (!address) return "-";
-
-  return `${address.slice(0, 6)}...${address.slice(-4)}`;
-}
+import { CardHeader } from "@/components/shared/card-header";
+import { InfoRow } from "@/components/shared/info-row";
+import { shortenAddress } from "@/lib/utils";
 
 export function WalletCard() {
   const {
@@ -20,40 +17,22 @@ export function WalletCard() {
 
   return (
     <Card className="rounded-2xl p-6">
-      <div className="mb-4 flex items-center gap-2">
-        <Wallet className="h-5 w-5 text-indigo-500" />
-
-        <h3 className="font-semibold">
-          Wallet
-        </h3>
-      </div>
+      <CardHeader icon={Wallet} title="Wallet" />
 
       <div className="space-y-3 text-sm">
-        <div>
-          <p className="text-muted-foreground">
-            Address
-          </p>
-
+        <InfoRow label="Address">
           <p className="font-medium">
             {shortenAddress(address)}
           </p>
-        </div>
+        </InfoRow>
 
-        <div>
-          <p className="text-muted-foreground">
-            Chain
-          </p>
-
+        <InfoRow label="Chain">
           <p className="font-medium">
             {chainId ?? "-"}
           </p>
-        </div>
+        </InfoRow>
 
-        <div>
-          <p className="text-muted-foreground">
-            Status
-          </p>
-
+        <InfoRow label="Status">
           <p
             className={
               isConnected
@@ -65,7 +44,7 @@ export function WalletCard() {
               ? "Connected"
               : "Disconnected"}
           </p>
-        </div>
+        </InfoRow>
       </div>
     </Card>
   );

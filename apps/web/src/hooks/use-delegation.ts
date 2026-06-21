@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 
+import { generateId } from "@/lib/utils";
+
 export type Delegation = {
   id: string;
 
@@ -13,15 +15,6 @@ export type Delegation = {
     | "active"
     | "revoked";
 };
-
-function generateId() {
-  return (
-    Date.now().toString(36) +
-    Math.random()
-      .toString(36)
-      .slice(2)
-  );
-}
 
 export function useDelegation() {
   const [

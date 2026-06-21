@@ -1,3 +1,5 @@
+import { ProbabilityBar } from "@/components/shared/probability-bar";
+
 type MarketCardProps = {
   question: string;
   yesProbability: number;
@@ -49,37 +51,19 @@ export function MarketCard({
       </h3>
 
       <div className="space-y-4">
-        <div>
-          <div className="mb-2 flex justify-between">
-            <span>YES</span>
-            <span>{yesProbability}%</span>
-          </div>
+        <ProbabilityBar
+          label="YES"
+          probability={yesProbability}
+          barColor="bg-indigo-500"
+          trackColor="bg-indigo-200"
+        />
 
-          <div className="h-2 rounded-full bg-indigo-200">
-            <div
-              className="h-2 rounded-full bg-indigo-500"
-              style={{
-                width: `${yesProbability}%`,
-              }}
-            />
-          </div>
-        </div>
-
-        <div>
-          <div className="mb-2 flex justify-between">
-            <span>NO</span>
-            <span>{noProbability}%</span>
-          </div>
-
-          <div className="h-2 rounded-full bg-slate-200">
-            <div
-              className="h-2 rounded-full bg-slate-500"
-              style={{
-                width: `${noProbability}%`,
-              }}
-            />
-          </div>
-        </div>
+        <ProbabilityBar
+          label="NO"
+          probability={noProbability}
+          barColor="bg-slate-500"
+          trackColor="bg-slate-200"
+        />
       </div>
     </div>
   );
