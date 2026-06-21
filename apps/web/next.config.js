@@ -16,9 +16,7 @@ const nextConfig = {
   turbopack: {   
   },
   allowedDevOrigins: [
-    '100.71.110.116',
-    '*.tail1234.ts.net',
-    '100.*',
+    'localhost',
   ],
 }
 

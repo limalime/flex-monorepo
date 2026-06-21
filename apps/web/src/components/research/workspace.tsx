@@ -12,6 +12,8 @@ import { PremiumCard } from "./premium-card";
 
 import { useState } from "react";
 
+import { fetchPremiumResearch } from "@/lib/x402/premium";
+
 export function ResearchWorkspace() {
   const { result, run, isLoading } = useResearch();
 
