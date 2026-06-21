@@ -8,6 +8,8 @@ import {
   Card,
 } from "@/components/ui/card";
 
+import { CardHeader } from "@/components/shared/card-header";
+
 import type {
   PermissionActivity,
 } from "@/hooks/use-permissions";
@@ -41,18 +43,7 @@ export function ActivityFeedCard({
 }: Props) {
   return (
     <Card className="rounded-2xl p-6">
-      <div className="mb-4 flex items-center gap-2">
-        <Activity
-          className="
-            h-5 w-5
-            text-indigo-500
-          "
-        />
-
-        <h3 className="font-semibold">
-          Activity Feed
-        </h3>
-      </div>
+      <CardHeader icon={Activity} title="Activity Feed" />
 
       {activities.length === 0 ? (
         <p

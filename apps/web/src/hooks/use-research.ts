@@ -2,25 +2,9 @@
 
 import { useState } from "react";
 
-export type ResearchResult = {
-  recommendation: string;
+import type { ResearchResult } from "@/types/research";
 
-  confidence: number;
-
-  summary: string;
-
-  bullCase: string[];
-
-  bearCase: string[];
-
-  premium?: {
-    riskLevel: string;
-
-    marketSignals: string[];
-
-    strategy: string;
-  };
-};
+export type { ResearchResult } from "@/types/research";
 
 export function useResearch() {
   const [

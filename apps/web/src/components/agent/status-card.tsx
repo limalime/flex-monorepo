@@ -2,9 +2,10 @@
 
 import { Bot } from "lucide-react";
 import { Card } from "@/components/ui/card";
+import { CardHeader } from "@/components/shared/card-header";
+import { InfoRow } from "@/components/shared/info-row";
 import { useWallet } from "@/hooks/use-wallet";
 import { useSmartAccount } from "@/hooks/use-smart-account";
-import { usePermissions } from "@/hooks/use-permission";
 import { useAgent } from "@/providers/agent";
 
 export function AgentStatusCard() {
@@ -20,23 +21,18 @@ export function AgentStatusCard() {
 
   return (
     <Card className="rounded-2xl p-6">
-      <div className="mb-4 flex items-center gap-2">
-        <Bot className="h-5 w-5 text-indigo-500" />
-        <h3 className="font-semibold">Agent Status</h3>
-      </div>
+      <CardHeader icon={Bot} title="Agent Status" />
 
       <div className="space-y-4">
-        <div>
-          <p className="text-muted-foreground">Wallet</p>
+        <InfoRow label="Wallet">
           {!isConnected ? (
             <p className="text-muted-foreground">Please connect your wallet</p>
           ) : (
             <p className="text-green-500">Connected</p>
           )}
-        </div>
+        </InfoRow>
 
-        <div>
-          <p className="text-muted-foreground">Smart Account</p>
+        <InfoRow label="Smart Account">
           {!isConnected ? (
             <p className="text-muted-foreground">Please connect your wallet</p>
           ) : (
@@ -44,12 +40,11 @@ export function AgentStatusCard() {
               {address ? "Ready" : "Not Generated"}
             </p>
           )}
-        </div>
+        </InfoRow>
 
-        <div>
-          <p className="text-muted-foreground">Permissions</p>
+        <InfoRow label="Permissions">
           <p>{!isConnected ? "-" : `${activePermissions} Active`}</p>
-        </div>
+        </InfoRow>
       </div>
     </Card>
   );

@@ -2,47 +2,21 @@
 
 import { Bot, Copy, ExternalLink } from "lucide-react";
 
-import { toast } from "sonner";
-
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { CHAIN } from "@/lib/config/chains";
+import { CardHeader } from "@/components/shared/card-header";
+import { InfoRow } from "@/components/shared/info-row";
+import { shortenAddress, copyAddress, openExplorer } from "@/lib/utils";
 
 type Props = {
   address?: string;
 };
 
-function shortenAddress(address?: string) {
-  if (!address) return "-";
-
-  return `${address.slice(0, 6)}...${address.slice(-4)}`;
-}
-
 export function SmartAccountCard({ address }: Props) {
-  async function copyAddress() {
-    if (!address) return;
-
-    await navigator.clipboard.writeText(address);
-
-    toast.success("Smart account copied");
-  }
-
-  function openExplorer() {
-    if (!address) return;
-
-    const explorerUrl = CHAIN.blockExplorers?.default.url;
-    if (explorerUrl) {
-      window.open(`${explorerUrl}/address/${address}`, "_blank");
-    }
-  }
 
   return (
     <Card className="rounded-2xl p-6">
-      <div className="mb-4 flex items-center gap-2">
-        <Bot className="h-5 w-5 text-indigo-500" />
-
-        <h3 className="font-semibold">Smart Account</h3>
-      </div>
+      <CardHeader icon={Bot} title="Smart Account" />
 
       {!address ? (
         <div>
@@ -51,32 +25,26 @@ export function SmartAccountCard({ address }: Props) {
       ) : (
         <>
           <div className="space-y-3 text-sm">
-            <div>
-              <p className="text-muted-foreground">Address</p>
-
+            <InfoRow label="Address">
               <p className="font-medium">{shortenAddress(address)}</p>
-            </div>
+            </InfoRow>
 
-            <div>
-              <p className="text-muted-foreground">Type</p>
-
+            <InfoRow label="Type">
               <p className="font-medium">MetaMask Smart Account</p>
-            </div>
+            </InfoRow>
 
-            <div>
-              <p className="text-muted-foreground">Status</p>
-
+            <InfoRow label="Status">
               <p className="text-green-500">Ready</p>
-            </div>
+            </InfoRow>
           </div>
 
           <div className="mt-5 flex gap-2">
-            <Button size="sm" variant="outline" onClick={copyAddress}>
+            <Button size="sm" variant="outline" onClick={() => copyAddress(address)}>
               <Copy className="mr-2 h-4 w-4" />
               Copy
             </Button>
 
-            <Button size="sm" variant="outline" onClick={openExplorer}>
+            <Button size="sm" variant="outline" onClick={() => openExplorer(address)}>
               <ExternalLink className="mr-2 h-4 w-4" />
               Explorer
             </Button>

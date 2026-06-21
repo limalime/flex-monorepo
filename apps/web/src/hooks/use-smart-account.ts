@@ -1,12 +1,10 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 import { createSmartAccount } from "@/lib/smart-account";
 import { useFlexWalletClient } from "@/hooks/use-wallet-client";
-
-const STORAGE_KEY =
-  "flex-smart-account";
+import { useLocalStorage } from "@/hooks/use-local-storage";
 
 export function useSmartAccount() {
   const {
@@ -16,25 +14,15 @@ export function useSmartAccount() {
   const [
     address,
     setAddress,
-  ] = useState<string>();
+  ] = useLocalStorage<string | undefined>(
+    "flex-smart-account",
+    undefined,
+  );
 
   const [
     isLoading,
     setIsLoading,
   ] = useState(false);
-
-  useEffect(() => {
-    const storedAddress =
-      localStorage.getItem(
-        STORAGE_KEY,
-      );
-
-    if (storedAddress) {
-      setAddress(
-        storedAddress,
-      );
-    }
-  }, []);
 
   async function init() {
     if (!walletClient) {
@@ -61,14 +49,7 @@ export function useSmartAccount() {
         smartAddress,
       );
 
-      setAddress(
-        smartAddress,
-      );
-
-      localStorage.setItem(
-        STORAGE_KEY,
-        smartAddress,
-      );
+      setAddress(smartAddress);
 
       return smartAddress;
     } catch (error) {
@@ -85,10 +66,6 @@ export function useSmartAccount() {
 
   function clear() {
     setAddress(undefined);
-
-    localStorage.removeItem(
-      STORAGE_KEY,
-    );
   }
 
   return {
