@@ -1,0 +1,19 @@
+{
+  "expo": {
+    "name": "Garap",
+    "slug": "garap",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "scheme": "garap",
+    "userInterfaceStyle": "dark",
+    "newArchEnabled": true,
+    "assetBundlePatterns": ["**/*"],
+    "android": {
+      "package": "app.garap.productivity",
+      "adaptiveIcon": {
+        "backgroundColor": "#101522"
+      },
+      "edgeToEdgeEnabled": true
+    }
+  }
+}
