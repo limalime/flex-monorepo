@@ -57,13 +57,21 @@ export function CreatePermissionDialog({
           <div className="space-y-4">
             <PermissionForm
               onCreate={(permission) => {
-                onCreate(permission);
+                try {
+                  onCreate(permission);
 
-                toast.success(
-                  "Permission created",
-                );
+                  toast.success(
+                    "Permission created",
+                  );
 
-                setOpen(false);
+                  setOpen(false);
+                } catch (err) {
+                  toast.error(
+                    err instanceof Error
+                      ? err.message
+                      : "Failed to create permission",
+                  );
+                }
               }}
             />
           </div>

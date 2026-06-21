@@ -108,15 +108,6 @@ Return ONLY valid JSON.
   const data =
     await response.json();
 
-  console.log(
-    "OPENROUTER RESPONSE:",
-    JSON.stringify(
-      data,
-      null,
-      2,
-    ),
-  );
-
   let content =
     data?.choices?.[0]?.message?.content;
 
@@ -142,21 +133,13 @@ Return ONLY valid JSON.
       .replace(/```/g, "")
       .trim();
 
-  console.log(
-    "CLEANED CONTENT:",
-    cleaned,
-  );
-
   try {
     return JSON.parse(
       cleaned,
     ) as ResearchResult;
-  } catch (error) {
-    console.error(
-      "JSON PARSE FAILED",
-      cleaned,
+  } catch {
+    throw new Error(
+      `Failed to parse research response as JSON: ${cleaned.slice(0, 200)}`,
     );
-
-    throw error;
   }
 }

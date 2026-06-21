@@ -11,7 +11,7 @@ import { SmartAccountCard } from "./smart-account-card";
 import { toast } from "sonner";
 
 export function SmartAccountDashboard() {
-  const { address, init, isLoading } = useSmartAccount();
+  const { address, init, isLoading, error } = useSmartAccount();
 
   return (
     <div className="space-y-6">
@@ -34,8 +34,12 @@ export function SmartAccountDashboard() {
             if (address) {
               toast.success("Smart account generated");
             }
-          } catch {
-            toast.error("Failed to generate smart account");
+          } catch (err) {
+            toast.error(
+              err instanceof Error
+                ? err.message
+                : "Failed to generate smart account",
+            );
           }
         }}
         disabled={isLoading}
@@ -46,6 +50,10 @@ export function SmartAccountDashboard() {
       >
         {isLoading ? "Generating..." : "Generate Smart Account"}
       </Button>
+
+      {error && (
+        <p className="mt-2 text-sm text-red-500">{error}</p>
+      )}
     </div>
   );
 }

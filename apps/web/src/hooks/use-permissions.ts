@@ -148,7 +148,9 @@ export function usePermissions() {
     },
   ) {
     if (!address) {
-      return;
+      throw new Error(
+        "Wallet not connected. Connect your wallet to create permissions.",
+      );
     }
 
     setActivities(

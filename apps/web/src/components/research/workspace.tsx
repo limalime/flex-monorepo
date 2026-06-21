@@ -1,8 +1,14 @@
 "use client";
 
+import { useState } from "react";
+
+import { toast } from "sonner";
+
 import { Card } from "@/components/ui/card";
 
 import { useResearch } from "@/hooks/use-research";
+
+import { fetchPremiumResearch } from "@/lib/x402/premium";
 
 import { ResearchForm } from "./form";
 
@@ -10,21 +16,26 @@ import { ResultCard } from "./result-card";
 
 import { PremiumCard } from "./premium-card";
 
-import { useState } from "react";
-
 export function ResearchWorkspace() {
-  const { result, run, isLoading } = useResearch();
+  const { result, error, run, isLoading } = useResearch();
 
   const [premiumUnlocked, setPremiumUnlocked] = useState(false);
   const [premiumData, setPremiumData] = useState();
 
   async function handleUnlock() {
-  const data =
-    await fetchPremiumResearch();
+    try {
+      const data =
+        await fetchPremiumResearch();
 
-  setPremiumData(data);
-
-  setPremiumUnlocked(true);
+      setPremiumData(data);
+      setPremiumUnlocked(true);
+    } catch (err) {
+      toast.error(
+        err instanceof Error
+          ? err.message
+          : "Failed to unlock premium research",
+      );
+    }
   }
 
   return (
@@ -33,6 +44,10 @@ export function ResearchWorkspace() {
         <h1 className="mb-4 text-2xl font-bold">Research Engine</h1>
 
         <ResearchForm isLoading={isLoading} onSubmit={run} />
+
+        {error && (
+          <p className="mt-3 text-sm text-red-500">{error}</p>
+        )}
       </Card>
 
       {result && <ResultCard result={result} />}
